@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel del Paciente</title>
+  <link rel="stylesheet" href="css/usuario.css" />
+</head>
+<body>
+  <div class="container">
+    <h1 id="nombrePaciente">Bienvenido</h1>
+
+
+    <div class="card">
+      <h2>Agendar Nueva Cita</h2>
+
+      <label for="medicoSelect">Selecciona Médico:</label>
+      <select id="medicoSelect">
+        <option value="">-- Selecciona --</option>
+      </select>
+
+      <label for="fechaInput">Fecha:</label>
+      <input type="date" id="fechaInput" />
+
+      <label for="horaInput">Hora:</label>
+      <select id="horaInput">
+        <option value="">Selecciona una hora</option>
+      </select>
+
+      <button id="btnAgendarCita">Agendar Cita</button>
+    </div>
+
+    <div class="card" id="misCitas">
+      <!-- Aquí se cargarán las citas del paciente -->
+    </div>
+  </div>
+
+  <script src="javascript/clases.js"></script>
+  <script src="javascript/credenciales.js"></script>
+  <script src="javascript/usuario.js"></script>
+</body>
+</html>

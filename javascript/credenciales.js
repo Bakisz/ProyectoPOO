@@ -1,12 +1,12 @@
+// === LOGIN ===
+
 const usuarios = [
-  // ADMINISTRADOR
   {
     usuario: "admin",
     clave: "admin123",
     tipo: "admin",
     instancia: new Administrador("Administrador General", "admin", "admin123")
   },
-  // MEDICOS
   {
     usuario: "drlopez",
     clave: "medico123",
@@ -31,7 +31,6 @@ const usuarios = [
     tipo: "medico",
     instancia: new Medico("Dra. Maria", "Dentista", "dramaria", "medico123")
   },
-  // USUARIOS DE PRUEBA
   {
     usuario: "juanperez",
     clave: "paciente123",
@@ -64,33 +63,53 @@ const usuarios = [
   }
 ];
 
+// Almacenar el admin y médicos en localStorage para persistencia
 usuarios.forEach(u => {
   if (u.tipo === "admin") {
     localStorage.setItem("admin", JSON.stringify(u.instancia));
   } else if (u.tipo === "medico") {
     localStorage.setItem(`medico_${u.instancia.nombre}`, JSON.stringify(u.instancia));
-  } else if (u.tipo === "paciente") {
-    localStorage.setItem(`paciente_${u.instancia.rut}`, JSON.stringify(u.instancia));
   }
 });
 
-document.getElementById("loginForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-  const user = document.getElementById("username").value.trim();
-  const pass = document.getElementById("password").value.trim();
-  const error = document.getElementById("errorMsg");
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("loginForm");
+  if (!form) return;
 
-  const match = usuarios.find(
-    u => u.usuario === user && u.clave === pass
-  );
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-  if (match) {
-    localStorage.setItem("usuario", match.usuario);
-    localStorage.setItem("tipo", match.tipo);
-    localStorage.setItem("instancia", JSON.stringify(match.instancia));
-    window.location.href = `${match.tipo}.html`;
-  } else {
-    error.textContent = "Usuario o contraseña incorrectos.";
-  }
+    const user = document.getElementById("username").value.trim();
+    const pass = document.getElementById("password").value.trim();
+    const error = document.getElementById("errorMsg");
+
+    const match = usuarios.find(u => u.usuario === user && u.clave === pass);
+
+    if (match) {
+      localStorage.setItem("usuario", match.usuario);
+      localStorage.setItem("tipo", match.tipo);
+      localStorage.setItem("instancia", JSON.stringify(match.instancia));
+
+    if (match.tipo === "paciente") {
+      // Intenta recuperar la versión guardada en localStorage si existe
+      const stored = localStorage.getItem(`paciente_${match.instancia.rut}`);
+      let pacienteReal;
+    
+      if (stored) {
+        pacienteReal = Object.assign(new Paciente(), JSON.parse(stored));
+      } else {
+        pacienteReal = match.instancia;
+        localStorage.setItem(`paciente_${match.instancia.rut}`, JSON.stringify(pacienteReal));
+      }
+    
+      // Guarda la sesión actual con paciente completo
+      localStorage.setItem("paciente", JSON.stringify(pacienteReal));
+    }
+
+      window.location.href = match.tipo + ".html";
+    } else {
+      error.textContent = "Credenciales incorrectas.";
+    }
+  });
 });
 

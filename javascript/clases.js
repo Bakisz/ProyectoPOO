@@ -1,3 +1,5 @@
+// === clases.js ===
+
 class Cita {
   constructor(id, paciente, medico, fecha, hora) {
     this.id = id || Date.now();
@@ -18,12 +20,26 @@ class Paciente {
     this.citas = [];
   }
 
-  agendarCita(medico, fecha, hora) {
-    const nuevaCita = new Cita(null, this.nombre, medico.nombre, fecha, hora);
+  agendarCita(nombreMedico, fecha, hora) {
+    const nuevaCita = {
+      paciente: this.nombre,
+      medico: nombreMedico,
+      fecha,
+      hora
+    };
+
     this.citas.push(nuevaCita);
-    medico.recibirCita(nuevaCita);
-    medico.reservarHorario(fecha, hora); // ← Nuevo
-    this.guardar();
+
+    // Guardar el paciente correctamente
+    localStorage.setItem(`paciente_${this.rut}`, JSON.stringify(this));
+    localStorage.setItem("paciente", JSON.stringify(this));  // mantener sesión actualizada
+
+    // Guardar al médico
+    const medico = Medico.cargar(nombreMedico);
+    medico.citas.push(nuevaCita);
+    medico.reservarHorario(fecha, hora);
+    medico.guardar();
+
   }
 
   cancelarCita(idCita) {
@@ -31,7 +47,8 @@ class Paciente {
     if (cita) {
       const medico = Medico.cargar(cita.medico);
       if (medico) {
-        medico.liberarHorario(cita.fecha, cita.hora); // ← Nuevo
+        medico.liberarHorario(cita.fecha, cita.hora);
+        medico.cancelarCita(idCita);
       }
     }
     this.citas = this.citas.filter(c => c.id !== idCita);
@@ -43,23 +60,26 @@ class Paciente {
     if (cita) {
       const medico = Medico.cargar(cita.medico);
       if (medico) {
-        medico.liberarHorario(cita.fecha, cita.hora);     // libera anterior
-        medico.reservarHorario(nuevaFecha, nuevaHora);    // reserva nuevo
+        medico.liberarHorario(cita.fecha, cita.hora);
+        medico.reservarHorario(nuevaFecha, nuevaHora);
+        cita.fecha = nuevaFecha;
+        cita.hora = nuevaHora;
       }
-      cita.fecha = nuevaFecha;
-      cita.hora = nuevaHora;
       this.guardar();
     }
   }
 
   guardar() {
     localStorage.setItem(`paciente_${this.rut}`, JSON.stringify(this));
+    localStorage.setItem("paciente", JSON.stringify(this)); // Actualiza la sesión activa
   }
+
 
   static cargar(rut) {
     const data = localStorage.getItem(`paciente_${rut}`);
     return data ? Object.assign(new Paciente(), JSON.parse(data)) : null;
   }
+
 }
 
 class Medico {
@@ -69,7 +89,7 @@ class Medico {
     this.username = username;
     this.password = password;
     this.citas = [];
-    this.horariosDisponibles = {}; // { "2025-06-21": ["08:00", "09:00", ...] }
+    this.horariosDisponibles = {};
   }
 
   generarHorarios(fecha) {
@@ -83,48 +103,37 @@ class Medico {
 
   recibirCita(cita) {
     this.citas.push(cita);
-    this.guardar();
   }
 
   cancelarCita(idCita) {
     this.citas = this.citas.filter(c => c.id !== idCita);
-    this.guardar();
   }
 
   reservarHorario(fecha, hora) {
     this.generarHorarios(fecha);
     this.horariosDisponibles[fecha] = this.horariosDisponibles[fecha].filter(h => h !== hora);
-    this.guardar();
   }
 
   liberarHorario(fecha, hora) {
     this.generarHorarios(fecha);
     if (!this.horariosDisponibles[fecha].includes(hora)) {
       this.horariosDisponibles[fecha].push(hora);
-      this.horariosDisponibles[fecha].sort(); // Opcional
+      this.horariosDisponibles[fecha].sort();
     }
-    this.guardar();
   }
 
-  reprogramarCita(idCita, nuevaFecha, nuevaHora) {
-    const cita = this.citas.find(c => c.id === idCita);
-    if (cita) {
-      this.liberarHorario(cita.fecha, cita.hora);
-      cita.fecha = nuevaFecha;
-      cita.hora = nuevaHora;
-      this.reservarHorario(nuevaFecha, nuevaHora);
-      this.guardar();
-    }
+  static cargar(nombre) {
+    const data = JSON.parse(localStorage.getItem(`medico_${nombre}`));
+    if (!data) return null;
+    const m = new Medico(data.nombre, data.especialidad, data.usuario, data.clave);
+    m.citas = data.citas || [];
+    return m;
   }
 
   guardar() {
     localStorage.setItem(`medico_${this.nombre}`, JSON.stringify(this));
-  }
+}
 
-  static cargar(nombre) {
-    const data = localStorage.getItem(`medico_${nombre}`);
-    return data ? Object.assign(new Medico(), JSON.parse(data)) : null;
-  }
 }
 
 class Administrador {
@@ -166,46 +175,6 @@ class Administrador {
   obtenerTodasCitas() {
     const medicos = this.obtenerTodosMedicos();
     return medicos.flatMap(m => m.citas);
-  }
-
-  agendarCita(pacienteNombre, medicoNombre, fecha, hora) {
-    const pacientes = this.obtenerTodosPacientes();
-    const paciente = pacientes.find(p => p.nombre === pacienteNombre);
-    const medicos = this.obtenerTodosMedicos();
-    const medico = medicos.find(m => m.nombre === medicoNombre);
-    if (paciente && medico) {
-      paciente.agendarCita(medico, fecha, hora);
-    }
-  }
-
-  cancelarCita(medicoNombre, idCita) {
-    const medicos = this.obtenerTodosMedicos();
-    const medico = medicos.find(m => m.nombre === medicoNombre);
-    if (medico) {
-      const cita = medico.citas.find(c => c.id === idCita);
-      if (cita) {
-        medico.liberarHorario(cita.fecha, cita.hora); // NUEVO
-      }
-      medico.cancelarCita(idCita);
-    }
-    const pacientes = this.obtenerTodosPacientes();
-    pacientes.forEach(p => p.cancelarCita(idCita));
-  }
-
-  reprogramarCita(medicoNombre, idCita, nuevaFecha, nuevaHora) {
-    const medicos = this.obtenerTodosMedicos();
-    const medico = medicos.find(m => m.nombre === medicoNombre);
-    if (medico) {
-      medico.reprogramarCita(idCita, nuevaFecha, nuevaHora);
-    }
-    const pacientes = this.obtenerTodosPacientes();
-    pacientes.forEach(p => {
-      const cita = p.citas.find(c => c.id === idCita);
-      if (cita) {
-        cita.fecha = nuevaFecha;
-        cita.hora = nuevaHora;
-      }
-    });
   }
 
   guardar() {
