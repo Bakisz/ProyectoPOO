@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel Administrador - Agenda Médica</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <h1>Panel del Administrador</h1>
+  <div class="container">
+
+    <!-- REGISTRAR MÉDICO -->
+    <div class="card">
+      <h3>Registrar Médico</h3>
+      <input type="text" id="nombreMedico" placeholder="Nombre del médico">
+      <input type="text" id="especialidadMedico" placeholder="Especialidad">
+      <input type="text" id="usernameMedico" placeholder="Usuario médico">
+      <input type="password" id="passwordMedico" placeholder="Contraseña médico">
+      <button onclick="registrarMedico()">Registrar</button>
+    </div>
+
+    <!-- AGENDAR CITA -->
+    <div class="card">
+      <h3>Agendar Cita</h3>
+      <select id="pacienteCita">
+        <option value="">Seleccione paciente</option>
+      </select>
+      <select id="medicoCita">
+        <option value="">Seleccione médico</option>
+      </select>
+      <input type="date" id="fechaCita">
+      <input type="time" id="horaCita">
+      <button onclick="agendarCita()">Agendar</button>
+    </div>
+
+    <!-- CANCELAR CITA -->
+    <div class="card">
+      <h3>Cancelar Cita</h3>
+      <select id="medicoCancelar">
+        <option value="">Seleccione médico</option>
+      </select>
+      <select id="idCitaCancelar">
+        <option value="">Seleccione ID de cita</option>
+      </select>
+      <button class="secondary" onclick="cancelarCita()">Cancelar</button>
+    </div>
+
+    <!-- REPROGRAMAR CITA -->
+    <div class="card">
+      <h3>Reprogramar Cita</h3>
+      <select id="medicoReprogramar">
+        <option value="">Seleccione médico</option>
+      </select>
+      <select id="idCitaReprogramar">
+        <option value="">Seleccione ID de cita</option>
+      </select>
+      <input type="date" id="nuevaFecha">
+      <input type="time" id="nuevaHora">
+      <button class="secondary" onclick="reprogramarCita()">Reprogramar</button>
+    </div>
+
+    <!-- VER DATOS -->
+    <div class="card">
+      <h3>Ver Datos</h3>
+      <button onclick="verMedicos()">Ver Médicos</button>
+      <button onclick="verPacientes()">Ver Pacientes</button>
+      <button onclick="verCitas()">Ver Citas</button>
+      <div id="listadoResultados"></div>
+    </div>
+
+    <!-- VER HORARIOS DISPONIBLES -->
+    <div class="card">
+      <h3>Ver Horarios Disponibles</h3>
+      <select id="selectNombreMedico">
+        <option value="">Seleccione médico</option>
+      </select>
+      <input type="date" id="inputFecha">
+      <button id="btnVerHorarios">Ver Horarios</button>
+      <div id="resultadoDisponibilidad" style="margin-top: 10px;"></div>
+    </div>
+
+
+
+  </div>
+
+  <script src="javascript/clases.js"></script>
+  <script src="javascript/admin.js"></script>
+</body>
+</html>

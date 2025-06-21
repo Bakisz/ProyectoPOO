@@ -1,0 +1,114 @@
+/* === css/admin.css === */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 30px;
+  color: #333;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #2c3e50;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: #007BFF;
+  margin-bottom: 15px;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="time"],
+input[type="number"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1em;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 10px 18px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#listadoResultados {
+  background-color: #f7f9fc;
+  border: 1px solid #d6d9dd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 10px;
+  font-size: 0.95em;
+  white-space: pre-wrap;
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.card button.secondary {
+  background-color: #6c757d;
+}
+
+.card button.secondary:hover {
+  background-color: #5a6268;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1em;
+  background-color: white;
+  color: #333;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: calc(100% - 12px);
+  background-position-y: center;
+  background-size: 18px;
+}
+
+select:focus {
+  outline: none;
+  border-color: #007BFF;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
