@@ -173,9 +173,26 @@ class Administrador {
   }
 
   obtenerTodasCitas() {
-    const medicos = this.obtenerTodosMedicos();
-    return medicos.flatMap(m => m.citas);
+    const citas = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (!key.startsWith("paciente_")) continue;
+    
+      const paciente = JSON.parse(localStorage.getItem(key));
+      if (!paciente?.citas) continue;
+    
+      paciente.citas.forEach(cita => {
+        citas.push({
+          paciente: paciente.nombre,
+          medico: cita.medico,
+          fecha: cita.fecha,
+          hora: cita.hora
+        });
+      });
+    }
+    return citas;
   }
+
 
   guardar() {
     localStorage.setItem("admin", JSON.stringify(this));

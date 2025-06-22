@@ -89,26 +89,26 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("usuario", match.usuario);
       localStorage.setItem("tipo", match.tipo);
       localStorage.setItem("instancia", JSON.stringify(match.instancia));
-
-    if (match.tipo === "paciente") {
-      // Intenta recuperar la versión guardada en localStorage si existe
-      const stored = localStorage.getItem(`paciente_${match.instancia.rut}`);
-      let pacienteReal;
     
-      if (stored) {
-        pacienteReal = Object.assign(new Paciente(), JSON.parse(stored));
-      } else {
-        pacienteReal = match.instancia;
-        localStorage.setItem(`paciente_${match.instancia.rut}`, JSON.stringify(pacienteReal));
+      if (match.tipo === "paciente") {
+        const stored = localStorage.getItem(`paciente_${match.instancia.rut}`);
+        let pacienteReal;
+      
+        if (stored) {
+          pacienteReal = Object.assign(new Paciente(), JSON.parse(stored));
+        } else {
+          pacienteReal = match.instancia;
+          localStorage.setItem(`paciente_${match.instancia.rut}`, JSON.stringify(pacienteReal));
+        }
+      
+        localStorage.setItem("paciente", JSON.stringify(pacienteReal));
       }
     
-      // Guarda la sesión actual con paciente completo
-      localStorage.setItem("paciente", JSON.stringify(pacienteReal));
-    }
-
+      if (match.tipo === "medico") {
+        localStorage.setItem("medico", JSON.stringify(match.instancia));
+      }
+    
       window.location.href = match.tipo + ".html";
-    } else {
-      error.textContent = "Credenciales incorrectas.";
     }
   });
 });

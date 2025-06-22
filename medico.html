@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel Médico</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/medico.css">
+</head>
+<body>
+
+  <h2 id="tituloBienvenida">Bienvenido </h2>
+
+  <div id="contenedorCitas">
+    <h3>Mis Citas</h3>
+    <ul id="listaCitas"></ul>
+  </div>
+
+  <!-- Modal de Reprogramación -->
+  <div id="modalReprogramar">
+    <div>
+      <h3>Reprogramar Cita</h3>
+      <label for="fechaNueva">Nueva Fecha:</label>
+      <input type="date" id="fechaNueva"><br>
+
+      <label for="horaNueva">Nueva Hora:</label>
+      <select id="horaNueva">
+        <option value="">Selecciona una hora</option>
+      </select><br>
+
+      <button onclick="confirmarReprogramacion()">Confirmar</button>
+      <button onclick="cerrarModal()">Cancelar</button>
+    </div>
+  </div>
+
+
+  <script src="javascript/clases.js"></script>
+  <script src="javascript/credenciales.js"></script>
+  <script src="javascript/medico.js"></script>
+
+</body>
+</html>

@@ -29,34 +29,20 @@
         <option value="">Seleccione médico</option>
       </select>
       <input type="date" id="fechaCita">
-      <input type="time" id="horaCita">
+      <select id="horaCita">
+        <option value="">Seleccione hora</option>
+      </select> 
       <button onclick="agendarCita()">Agendar</button>
     </div>
 
     <!-- CANCELAR CITA -->
     <div class="card">
       <h3>Cancelar Cita</h3>
-      <select id="medicoCancelar">
+      <label for="medicoCancelar">Seleccione médico:</label>
+      <select id="medicoCancelar" onchange="mostrarCitasDelMedico()">
         <option value="">Seleccione médico</option>
       </select>
-      <select id="idCitaCancelar">
-        <option value="">Seleccione ID de cita</option>
-      </select>
-      <button class="secondary" onclick="cancelarCita()">Cancelar</button>
-    </div>
-
-    <!-- REPROGRAMAR CITA -->
-    <div class="card">
-      <h3>Reprogramar Cita</h3>
-      <select id="medicoReprogramar">
-        <option value="">Seleccione médico</option>
-      </select>
-      <select id="idCitaReprogramar">
-        <option value="">Seleccione ID de cita</option>
-      </select>
-      <input type="date" id="nuevaFecha">
-      <input type="time" id="nuevaHora">
-      <button class="secondary" onclick="reprogramarCita()">Reprogramar</button>
+      <ul id="listaCitas"></ul>
     </div>
 
     <!-- VER DATOS -->
@@ -67,19 +53,6 @@
       <button onclick="verCitas()">Ver Citas</button>
       <div id="listadoResultados"></div>
     </div>
-
-    <!-- VER HORARIOS DISPONIBLES -->
-    <div class="card">
-      <h3>Ver Horarios Disponibles</h3>
-      <select id="selectNombreMedico">
-        <option value="">Seleccione médico</option>
-      </select>
-      <input type="date" id="inputFecha">
-      <button id="btnVerHorarios">Ver Horarios</button>
-      <div id="resultadoDisponibilidad" style="margin-top: 10px;"></div>
-    </div>
-
-
 
   </div>
 

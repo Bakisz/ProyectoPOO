@@ -1,0 +1,85 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f1f5f9;
+  margin: 0;
+  padding: 0;
+}
+h2, h3 {
+  text-align: center;
+  margin-top: 20px;
+}
+#contenedorCitas {
+  width: 80%;
+  max-width: 600px;
+  margin: 30px auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+#listaCitas li {
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #e9f1ff;
+  border-radius: 6px;
+  list-style: none;
+}
+#listaCitas button {
+  margin-right: 10px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#listaCitas button:hover {
+  opacity: 0.85;
+}
+#modalReprogramar {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+#modalReprogramar > div {
+  background-color: white;
+  padding: 25px;
+  border-radius: 10px;
+  text-align: center;
+}
+#modalReprogramar input,
+#modalReprogramar select {
+  padding: 6px;
+  margin: 8px 0;
+  width: 80%;
+}
+#modalReprogramar button {
+  padding: 8px 15px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+}
+#modalReprogramar button:hover {
+  background-color: #0056b3;
+}
+.boton-secundario {
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-right: 8px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.boton-secundario:hover {
+  background-color: #005fa3;
+}
+
